@@ -13,14 +13,54 @@ public class GameField {
     }
 
     public boolean isOver() {
-        return (cells[0].getValue() != '\0' && cells[0].getValue() == cells[1].getValue() && cells[0].getValue() == cells[2].getValue()) ||
-                (cells[3].getValue() != '\0' && cells[3].getValue() == cells[4].getValue() && cells[3].getValue() == cells[5].getValue()) ||
-                (cells[6].getValue() != '\0' && cells[6].getValue() == cells[7].getValue() && cells[6].getValue() == cells[8].getValue()) ||
-                (cells[0].getValue() != '\0' && cells[0].getValue() == cells[3].getValue() && cells[0].getValue() == cells[6].getValue()) ||
-                (cells[1].getValue() != '\0' && cells[1].getValue() == cells[4].getValue() && cells[1].getValue() == cells[7].getValue()) ||
-                (cells[2].getValue() != '\0' && cells[2].getValue() == cells[5].getValue() && cells[2].getValue() == cells[8].getValue()) ||
-                (cells[0].getValue() != '\0' && cells[0].getValue() == cells[4].getValue() && cells[0].getValue() == cells[8].getValue()) ||
-                (cells[2].getValue() != '\0' && cells[2].getValue() == cells[4].getValue() && cells[2].getValue() == cells[6].getValue());
+        char value;
+        //проверка по строкам
+        for (int i = 0; i < 3; i++) {
+            value = cells[i * 3].getValue();
+            for (int j = 0; j < 3; j++) {
+                if (cells[i * 3 + j].getValue() != value) {
+                    break;
+                }
+                if (cells[i * 3 + j].getValue() == value && j == 2 && value != '\0') {
+                    return true;
+                }
+            }
+        }
+        //проверка по столбцам
+        for (int j = 0; j < 3; j++) {
+            value = cells[j].getValue();
+            for (int i = 0; i < 3; i++) {
+                if (cells[i * 3 + j].getValue() != value) {
+                    break;
+                }
+                if (cells[i * 3 + j].getValue() == value && i == 2 && value != '\0') {
+                    return true;
+                }
+            }
+        }
+        //проверка по главной диагонали
+        value = cells[0].getValue();
+        for (int i = 0, j = 0; i < 3 && j < 3; i++, j++) {
+            if (cells[i * 3 + j].getValue() != value) {
+                break;
+            }
+            if (cells[i * 3 + j].getValue() == value && i == 2 && value != '\0') {
+                return true;
+            }
+        }
+
+        //проверка по второстепенной диагонали
+        value = cells[2].getValue();
+        for (int i = 0, j = 2; i < 3 && j >= 0; i++, j--) {
+            if (cells[i * 3 + j].getValue() != value) {
+                break;
+            }
+            if (cells[i * 3 + j].getValue() == value && i == 2 && value != '\0') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean isEmptyCellExists() {
